@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PhD Oral Chemistry Microlearning Cards</title>
+<style>
+:root {
+  --pink:#d65689; --pink2:#ef8eb4; --soft:#fff3f8; --soft2:#fff9fc;
+  --ink:#2f2b31; --muted:#746b73; --line:#f1bfd3; --good:#3a9d74;
+  --later:#b2782f; --shadow:0 12px 32px rgba(214,86,137,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; color:var(--ink);
+  font-family:"Aptos Rounded","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+  background:linear-gradient(180deg,#fff8fb 0%,#fff 55%,#fff7fb 100%);
+  min-height:100vh;
+}
+button,select,input{font:inherit}
+.app{width:min(820px,100%);margin:auto;padding:18px 14px 42px}
+.hero{
+  background:linear-gradient(135deg,#fff 0%,#fff2f7 100%);
+  border:1px solid var(--line);border-radius:24px;padding:20px 18px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.hero:after{content:"";position:absolute;width:160px;height:160px;border-radius:50%;
+ background:rgba(239,142,180,.14);right:-60px;top:-70px}
+h1{margin:0 0 6px;color:var(--pink);font-size:1.55rem;line-height:1.2}
+.sub{margin:0;color:var(--muted);line-height:1.55;font-size:.95rem;max-width:680px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 11px;font-size:.86rem}
+.pill b{color:var(--pink)}
+
+.controls{display:grid;grid-template-columns:1.35fr .75fr;gap:10px;margin:14px 0 10px}
+select,input{
+  width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;
+  padding:12px 13px;color:var(--ink);outline:none;
+}
+input:focus,select:focus{box-shadow:0 0 0 3px rgba(214,86,137,.13)}
+.toolbar{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+button{
+  border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:14px;
+  padding:11px 10px;font-weight:700;cursor:pointer;touch-action:manipulation;
+}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--pink);color:#fff;border-color:var(--pink)}
+button.good{color:var(--good);border-color:#b8dfcf;background:#f4fcf8}
+button.later{color:var(--later);border-color:#eed3ac;background:#fffaf1}
+button.active{background:var(--soft);color:var(--pink);border-color:var(--pink)}
+
+.progressWrap{height:8px;background:#f8dfe9;border-radius:99px;overflow:hidden;margin:10px 0 14px}
+.progress{height:100%;width:0;background:linear-gradient(90deg,var(--pink2),var(--pink));transition:.25s}
+
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:24px;
+  box-shadow:var(--shadow);padding:18px;min-height:410px;display:flex;flex-direction:column;
+}
+.meta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:13px}
+.tag{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--soft);
+ color:var(--pink);border-radius:999px;padding:7px 10px;font-weight:800;font-size:.88rem}
+.counter{color:var(--muted);font-size:.88rem}
+.question{font-size:1.35rem;line-height:1.45;font-weight:850;margin:6px 0 16px}
+.answer{display:none;border-top:1px dashed var(--line);padding-top:16px;line-height:1.72;font-size:1rem}
+.answer.show{display:block}
+.section{margin:0 0 14px}
+.label{display:block;color:var(--pink);font-weight:850;margin-bottom:5px}
+.key{color:var(--pink);font-weight:850}
+.english{background:var(--soft);border-left:4px solid var(--pink);padding:11px 12px;border-radius:10px}
+.trap{background:#fff9ed;border-left:4px solid #e0a24a;padding:11px 12px;border-radius:10px}
+.statusLine{margin-top:auto;padding-top:14px;color:var(--muted);font-size:.9rem}
+.cardButtons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.markButtons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+
+.listMode{display:none}
+.listMode.show{display:block}
+.deckMode.hide{display:none}
+.groupTitle{color:var(--pink);margin:24px 2px 10px;font-size:1.18rem}
+details{background:#fff;border:1px solid var(--line);border-radius:15px;margin:9px 0;overflow:hidden;box-shadow:0 7px 20px rgba(214,86,137,.07)}
+summary{padding:14px 15px;font-weight:800;line-height:1.45;background:var(--soft);cursor:pointer}
+.detailBody{padding:14px 15px;line-height:1.7}
+.empty{padding:34px 18px;text-align:center;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:20px}
+
+.footer{margin-top:18px;padding:14px;color:var(--muted);font-size:.86rem;line-height:1.55;text-align:center}
+@media(max-width:600px){
+  .app{padding:12px 10px 32px}
+  .hero{padding:17px 15px;border-radius:20px}
+  .controls{grid-template-columns:1fr}
+  .toolbar{grid-template-columns:1fr 1fr}
+  .card{padding:16px;min-height:390px}
+  .question{font-size:1.24rem}
+}
+
+/* ===== V3 mobile-first layout ===== */
+html { scroll-behavior:auto; }
+body { overflow-x:hidden; }
+body.drawerOpen { overflow:hidden; }
+
+.app {
+  width:min(760px,100%);
+  padding:max(10px,env(safe-area-inset-top)) 12px calc(34px + env(safe-area-inset-bottom));
+}
+
+.topbar {
+  position:sticky;
+  top:0;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px 2px 10px;
+  background:rgba(255,248,251,.94);
+  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);
+}
+.topbar h1 {
+  margin:0;
+  color:var(--pink);
+  font-size:1.28rem;
+  letter-spacing:.01em;
+}
+.topSub {
+  color:var(--muted);
+  font-size:.78rem;
+  margin-top:2px;
+}
+
+.menuBtn,.iconBtn {
+  width:46px;
+  height:46px;
+  padding:0;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  background:#fff;
+  box-shadow:0 6px 18px rgba(214,86,137,.10);
+}
+.menuBtn span {
+  display:block;
+  width:19px;
+  height:2px;
+  margin:2px 0;
+  border-radius:99px;
+  background:var(--pink);
+}
+.iconBtn {
+  font-size:1.75rem;
+  line-height:1;
+  font-weight:400;
+  color:var(--pink);
+}
+
+.quickStats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin:5px 0 10px;
+}
+.quickStats span {
+  min-width:0;
+  text-align:center;
+  white-space:nowrap;
+  padding:7px 4px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--muted);
+  font-size:.78rem;
+}
+.quickStats b { color:var(--pink); }
+
+.progressWrap {
+  height:7px;
+  margin:0 0 12px;
+}
+
+.card {
+  min-height:365px;
+  padding:18px 17px;
+  border-radius:22px;
+  touch-action:pan-y;
+}
+.question {
+  font-size:1.32rem;
+  margin-top:12px;
+}
+.answerBtn {
+  width:100%;
+  margin-top:11px;
+  min-height:56px;
+  font-size:1.05rem;
+}
+.markButtons,.cardButtons {
+  gap:10px;
+  margin-top:10px;
+}
+.markButtons button,.cardButtons button {
+  min-height:54px;
+}
+.cardButtons { margin-top:12px; }
+.nextBtn {
+  color:#fff;
+  background:var(--pink);
+  border-color:var(--pink);
+}
+.statusLine {
+  font-size:.86rem;
+  padding-top:18px;
+}
+
+.drawerOverlay {
+  position:fixed;
+  inset:0;
+  z-index:80;
+  background:rgba(40,25,33,.28);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .2s ease,visibility .2s ease;
+}
+.drawerOverlay.show {
+  opacity:1;
+  visibility:visible;
+}
+.drawer {
+  position:fixed;
+  top:0;
+  right:0;
+  z-index:90;
+  width:min(88vw,370px);
+  height:100dvh;
+  padding:calc(16px + env(safe-area-inset-top)) 16px calc(22px + env(safe-area-inset-bottom));
+  overflow-y:auto;
+  background:#fff9fc;
+  box-shadow:-18px 0 42px rgba(78,34,52,.18);
+  transform:translateX(105%);
+  transition:transform .24s ease;
+}
+.drawer.open { transform:translateX(0); }
+.drawerHead {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+.drawerTitle {
+  color:var(--pink);
+  font-size:1.35rem;
+  font-weight:850;
+}
+.drawerSub {
+  margin-top:3px;
+  color:var(--muted);
+  font-size:.82rem;
+}
+.drawerSection { margin:0 0 14px; }
+.drawerLabel {
+  display:block;
+  margin:0 0 6px 2px;
+  color:var(--pink);
+  font-size:.85rem;
+  font-weight:800;
+}
+.drawer select,.drawer input {
+  min-height:50px;
+  background:#fff;
+}
+.drawerGrid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:16px;
+}
+.drawerGrid button { min-height:50px; }
+.drawerNote {
+  margin:18px 3px 0;
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.55;
+}
+.listMode.show {
+  display:block;
+  padding-top:2px;
+}
+.groupTitle:first-child { margin-top:8px; }
+.footer { margin-top:12px; }
+
+@media(max-width:390px) {
+  .quickStats { gap:5px; }
+  .quickStats span { font-size:.73rem; padding:6px 2px; }
+  .card { min-height:345px; }
+  .question { font-size:1.23rem; }
+}
+
+</style>
+
+<meta name="theme-color" content="#d65689">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="PhD Cards">
+<meta name="description" content="PhD oral examination chemistry microlearning cards">
+<link rel="icon" href="data:image/svg+xml,
+<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22>
+<rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%23d65689%22/>
+<text x=%2250%22 y=%2263%22 text-anchor=%22middle%22 font-size=%2242%22 font-family=%22Arial%22 font-weight=%22700%22 fill=%22white%22>PhD</text>
+</svg>">
+</head>
+<body>
+<div class="drawerOverlay" id="drawerOverlay"></div>
+
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawerHead">
+    <div>
+      <div class="drawerTitle">学习工具</div>
+      <div class="drawerSub">筛选、速查与进度管理</div>
+    </div>
+    <button class="iconBtn" id="closeDrawerBtn" aria-label="关闭菜单">×</button>
+  </div>
+
+  <div class="drawerSection">
+    <label class="drawerLabel" for="moduleSelect">学习模块</label>
+    <select id="moduleSelect"></select>
+  </div>
+
+  <div class="drawerSection">
+    <label class="drawerLabel" for="searchInput">关键词搜索</label>
+    <input id="searchInput" placeholder="furfural、matrix、LOD、QUV…">
+  </div>
+
+  <div class="drawerGrid">
+    <button id="shuffleBtn">随机顺序</button>
+    <button id="reviewBtn">只看稍后</button>
+    <button id="modeBtn">列表速查</button>
+    <button id="exportBtn">导出进度</button>
+    <button id="importBtn">导入进度</button>
+    <button id="resetBtn">清空进度</button>
+  </div>
+  <input id="importFile" type="file" accept="application/json,.json" hidden>
+
+  <p class="drawerNote">“会了 / 稍后复习”会保存在当前浏览器。导出进度可作为额外备份。</p>
+</aside>
+
+<div class="app">
+  <header class="topbar">
+    <div>
+      <h1>PhD Oral Cards</h1>
+      <div class="topSub">Chemistry · Microlearning</div>
+    </div>
+    <button class="menuBtn" id="menuBtn" aria-label="打开学习工具">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <div class="quickStats">
+    <span>全部 <b id="totalStat">0</b></span>
+    <span>会了 <b id="knownStat">0</b></span>
+    <span>稍后 <b id="laterStat">0</b></span>
+    <span>筛选 <b id="filterStat">0</b></span>
+  </div>
+
+  <div class="progressWrap"><div class="progress" id="progressBar"></div></div>
+
+  <section class="deckMode" id="deckMode">
+    <article class="card" id="card">
+      <div class="meta">
+        <span class="tag" id="moduleTag"></span>
+        <span class="counter" id="counter"></span>
+      </div>
+      <div class="question" id="question"></div>
+      <div class="answer" id="answer"></div>
+      <div class="statusLine" id="statusLine"></div>
+    </article>
+
+    <button class="primary answerBtn" id="toggleBtn">显示答案</button>
+
+    <div class="markButtons">
+      <button class="good" id="knownBtn">✓ 会了</button>
+      <button class="later" id="laterBtn">↻ 稍后复习</button>
+    </div>
+
+    <div class="cardButtons">
+      <button id="prevBtn">← 上一张</button>
+      <button class="nextBtn" id="nextBtn">下一张 →</button>
+    </div>
+  </section>
+
+  <section class="listMode" id="listMode"></section>
+
+  <div class="footer">
+    Marker 解释需要结合方法条件、空白、标准品、重复性与整体 profile。
+  </div>
+</div>
+
+<script>
+const CARDS = [{"id": "c001", "module": "基础化学", "q": "Molecule、compound、polymer 有什么区别？", "answer": "<span class=\"key\">Molecule</span> 是由原子通过化学键组成的粒子；<span class=\"key\">compound</span> 强调由不同元素构成、具有确定组成；<span class=\"key\">polymer</span> 是由大量重复结构单元连接而成的高分子。", "example": "<span class=\"key\">Styrene</span> 是小分子单体，<span class=\"key\">polystyrene (PS)</span> 是由大量 styrene-derived units 构成的聚合物；木材中的 <span class=\"key\">cellulose</span> 也是聚合物。", "english": "A polymer is a macromolecule composed of many repeating structural units.", "trap": "不要把检测到一个小分子单体，直接等同于样品中存在同名聚合物。", "level": "基础"}, {"id": "c002", "module": "基础化学", "q": "Monomer 和 repeating unit 是一回事吗？", "answer": "<span class=\"key\">Monomer</span> 是用于形成聚合物的起始小分子；<span class=\"key\">repeating unit</span> 是聚合物链中重复出现的结构片段。聚合后，repeating unit 的结构不一定与游离 monomer 完全相同。", "example": "Styrene 聚合后形成 PS；聚合物链中的 repeating unit 是 styrene-derived unit。", "english": "The repeating unit is derived from the monomer, but it is part of the polymer chain.", "trap": "口试中不需要展开聚合机理，能区分层级即可。", "level": "基础"}, {"id": "c003", "module": "基础化学", "q": "Polarity 怎么理解？为什么它影响分析？", "answer": "<span class=\"key\">Polarity</span> 可以理解为分子内部电荷分布不均匀。含 <span class=\"key\">-OH</span>、<span class=\"key\">-COOH</span> 等官能团的分子往往更极性，更容易形成氢键，因此常较难挥发，也可能更容易吸附在活性表面。", "example": "糖类含多个 -OH，通常不适合直接 GC；经过 silylation 后可改善 GC 行为。", "english": "Polarity affects intermolecular interactions, extraction, volatility, and chromatographic behavior.", "trap": "极性不是“能不能溶于水”的唯一同义词。", "level": "基础"}, {"id": "c004", "module": "基础化学", "q": "Volatility 是什么？为什么 GC 很在意它？", "answer": "<span class=\"key\">Volatility</span> 是物质进入气相的能力，受分子量、分子间作用力和沸点等影响。GC 要求分析物在进样与柱温条件下能够进入气相，并且不在进入前完全分解。", "example": "许多 VOC/SVOC 可以直接或经前处理后用 GC-MS；高分子本体通常先热裂解。", "english": "GC mainly requires analytes that can enter the gas phase without uncontrolled decomposition.", "trap": "“加热了”不等于“完整汽化了”；聚合物通常先分解。", "level": "基础"}, {"id": "c005", "module": "基础化学", "q": "Thermal stability 是什么？", "answer": "<span class=\"key\">Thermal stability</span> 指分子或材料受热时保持原结构、不发生分解的能力。热稳定性不足的化合物可能在进样口或裂解器中发生断键、脱水、重排等变化。", "example": "糖类和聚合物受热时容易形成多种热降解产物。", "english": "Thermal stability determines whether a compound remains intact or decomposes during heating.", "trap": "不要把 thermal stability 与材料的机械稳定性混为一谈。", "level": "基础"}, {"id": "c006", "module": "基础化学", "q": "Hydroxyl、carbonyl、carboxyl、methoxy 分别提示什么？", "answer": "<span class=\"key\">Hydroxyl (-OH)</span> 增加极性和氢键；<span class=\"key\">carbonyl (C=O)</span> 包括醛、酮、酸、酯等，常与氧化或降解有关；<span class=\"key\">carboxyl (-COOH)</span> 极性强、酸性明显；<span class=\"key\">methoxy (-OCH₃)</span> 常见于木质素芳香结构。", "example": "Guaiacyl 单元通常含一个 methoxy，syringyl 单元通常含两个 methoxy。", "english": "Functional groups influence reactivity, polarity, volatility, and diagnostic fragmentation.", "trap": "看到 carbonyl 只能提示可能的氧化/降解背景，不能单独证明某一条机理。", "level": "基础"}, {"id": "c007", "module": "基础化学", "q": "Aromatic ring 为什么在你的课题里重要？", "answer": "<span class=\"key\">Aromatic ring</span> 具有较稳定的共轭结构，并能产生较有特征的裂解与质谱碎片。木质素和 PS 都含芳香结构，但它们的整体 marker patterns 不同。", "example": "Guaiacol、syringol、vanillin 等放在 lignin-related context 中；styrene-rich pattern 支持 PS。", "english": "Aromatic structures can provide characteristic pyrolysis and mass-spectral patterns.", "trap": "有芳香峰不等于一定是 lignin 或 PS，要看整组产物。", "level": "基础"}, {"id": "c008", "module": "基础化学", "q": "材料降解通常包括哪些反应路径？", "answer": "常见路径包括 <span class=\"key\">bond cleavage / fragmentation</span>、<span class=\"key\">dehydration</span>、<span class=\"key\">decarboxylation</span>、<span class=\"key\">oxidation</span>、<span class=\"key\">demethoxylation</span>、<span class=\"key\">rearrangement</span> 和 <span class=\"key\">secondary reactions</span>。", "example": "糖类形成 furans 常涉及 dehydration；芳香结构 profile 变化可能涉及 cleavage 或 demethoxylation。", "english": "Material degradation can involve several parallel and sequential reaction pathways.", "trap": "“降解”不是一种单独反应，也不一定只发生一步。", "level": "基础"}, {"id": "c009", "module": "基础化学", "q": "Dehydration、decarboxylation、rearrangement 各是什么意思？", "answer": "<span class=\"key\">Dehydration</span> 是失去 H₂O；<span class=\"key\">decarboxylation</span> 是失去 CO₂；<span class=\"key\">rearrangement</span> 是原子连接方式重新排列，可能生成原样中不存在的新结构。", "example": "Furfural、5-HMF 的形成常可放在 carbohydrate dehydration 的背景中理解。", "english": "Pyrolysis can create new products through dehydration, decarboxylation, and rearrangement.", "trap": "不要把裂解产物都理解成“原样中原封不动释放出来的”。", "level": "基础"}, {"id": "c010", "module": "GC-MS", "q": "GC 最核心的作用是什么？", "answer": "<span class=\"key\">Gas chromatography</span> 先让混合物汽化并随载气通过色谱柱；不同化合物因挥发性和与固定相相互作用不同，在不同时间流出，从而实现分离。", "example": "把混合物想成一群跑者：与固定相作用较弱、较容易进入气相的组分通常更早到达检测器。", "english": "GC separates mixture components according to their retention behavior.", "trap": "GC 主要负责分离，不负责单独确认结构。", "level": "基础"}, {"id": "c011", "module": "GC-MS", "q": "Retention time (RT) 是什么？", "answer": "<span class=\"key\">Retention time, RT</span> 是化合物从进样到流出色谱柱、到达检测器所需的时间。RT 受柱型、温度程序、载气流速和仪器条件影响。", "example": "同一个化合物换柱或换程序，RT 可能改变。", "english": "Retention time is method-dependent and should not be used alone for identification.", "trap": "不要把 RT 当作跨仪器、跨方法完全固定的身份证。", "level": "基础"}, {"id": "c012", "module": "GC-MS", "q": "Chromatogram 和 mass spectrum 有什么区别？", "answer": "<span class=\"key\">Chromatogram</span> 表示响应随时间变化，用来观察混合物在 RT 轴上的分离；<span class=\"key\">mass spectrum</span> 表示某个时间点或峰的离子强度随 m/z 变化，用来支持分子识别。", "example": "先在 TIC 中找到峰，再点开该峰查看 EI mass spectrum。", "english": "A chromatogram separates signals in time, whereas a mass spectrum shows the ion pattern of a selected peak.", "trap": "不要把 chromatogram 叫 spectrum。", "level": "基础"}, {"id": "c013", "module": "GC-MS", "q": "Peak area 能说明什么？", "answer": "<span class=\"key\">Peak area</span> 与进入检测器并产生响应的量有关，但同时受到响应因子、进样量、提取效率、衍生化、基质、共洗脱和积分方式影响。", "example": "同一化合物、同一流程下的 normalized peak area 可用于比较趋势，但不能自动变成绝对浓度。", "english": "Peak area can support comparative trends, but it is not automatically equal to concentration.", "trap": "没有校准和验证时，不要说 concentration。", "level": "基础"}, {"id": "c014", "module": "GC-MS", "q": "为什么 library match 不是最终定性？", "answer": "<span class=\"key\">Library match</span> 只表示实验谱图与数据库谱图相似。异构体、共洗脱、低信噪比和背景污染都可能产生误判，因此还要结合 RT、特征离子、空白、文献、标准品和样品背景。", "example": "你的 tentative identification 可由 NIST match、retention behavior、marker logic 和 blanks 共同支持。", "english": "Library matching is one line of evidence, not a final proof of identity.", "trap": "高 match score 也不能自动写成 confirmed identification。", "level": "基础"}, {"id": "c015", "module": "GC-MS", "q": "TIC 和 EIC 有什么区别？", "answer": "<span class=\"key\">TIC</span> 是每次扫描中所有离子信号的总和；<span class=\"key\">EIC</span> 只追踪一个或几个选定 m/z，适合观察低丰度目标离子、确认峰位置或检查共洗脱。", "example": "一个小峰在 TIC 中不明显，但其 characteristic ion 在 EIC 中可能更清楚。", "english": "An EIC selectively follows chosen ions, while a TIC sums the detected ion signal.", "trap": "EIC 仍需结合谱图和空白，不能单独完成定性。", "level": "基础"}, {"id": "c016", "module": "GC-MS", "q": "为什么 retention time 不能单独确认化合物？", "answer": "不同化合物可能有相近 RT，而且 RT 会随柱和方法改变。可靠识别需要 mass spectrum、characteristic ions、标准品或 retention index、空白与化学背景共同支持。", "example": "同一个 RT 附近可能存在 co-elution。", "english": "Retention time must be combined with spectral and contextual evidence.", "trap": "不要说 same RT therefore same compound。", "level": "基础"}, {"id": "c017", "module": "GC-MS", "q": "GC-MS 适合什么，不适合什么？", "answer": "适合 <span class=\"key\">volatile / semi-volatile organic compounds</span>，或经衍生化、萃取、热裂解后能进入气相的有机物。不适合直接分析无机盐、完整高分子本体和许多强极性不挥发物。", "example": "塑料添加剂可直接萃取后 GC-MS；聚合物 identity 常需要 Py-GC-MS。", "english": "GC-MS is powerful for volatile and semi-volatile organics, but non-volatile materials need suitable preparation or complementary methods.", "trap": "不要称它为万能方法。", "level": "基础"}, {"id": "c018", "module": "GC-MS", "q": "你的 thesis 中，GC-MS 真正做了什么？", "answer": "它用于比较不同处理和老化条件下的 chemical profiles，并把 furans、lignin-derived phenolics、fatty acids/extractives 等信号变化连接到材料转化与稳定性讨论。", "example": "重点是 profile comparison、tentative identification 和 marker interpretation，而非单纯列化合物名称。", "english": "In my thesis, GC-MS was used to compare chemical profiles and interpret degradation-related marker patterns.", "trap": "不要把工作描述成完整 validated quantification。", "level": "基础"}, {"id": "c019", "module": "MS", "q": "Electron ionization (EI) 在做什么？", "answer": "在常见 <span class=\"key\">electron ionization, EI</span> 中，电子轰击分子，使其形成离子并产生碎片。不同结构常形成具有诊断价值的 fragmentation pattern。", "example": "芳香化合物、脂肪酸衍生物和不同热裂解产物会呈现不同离子模式。", "english": "EI produces reproducible fragmentation patterns that are useful for library comparison.", "trap": "分子离子峰不一定总是最强，也可能很弱或不出现。", "level": "基础"}, {"id": "c020", "module": "MS", "q": "m/z 是什么？", "answer": "<span class=\"key\">m/z</span> 是离子的质量与电荷数之比。在 EI-GC-MS 中大多数离子带一个正电荷，因此 m/z 常近似对应离子质量，但概念上仍是比值。", "example": "m/z 不是 retention time。", "english": "Mass spectrometry separates ions according to their mass-to-charge ratio.", "trap": "不要把 m/z 直接说成 molecular weight。", "level": "基础"}, {"id": "c021", "module": "MS", "q": "Characteristic ion / diagnostic ion 是什么？", "answer": "<span class=\"key\">Characteristic ion</span> 是对某类结构或某个候选物有帮助的特征碎片。它可用于 EIC、峰确认和排除干扰，但通常需要多个离子及其比例共同判断。", "example": "在复杂 pyrogram 中可追踪某 marker 的 diagnostic ions。", "english": "Characteristic ions support identification when combined with retention and spectral information.", "trap": "单一离子可能并不唯一。", "level": "基础"}, {"id": "c022", "module": "MS", "q": "Co-elution 会带来什么问题？", "answer": "<span class=\"key\">Co-elution</span> 指两个或多个化合物在相近时间一起流出，得到混合谱图，影响库匹配、峰面积和定性。", "example": "可通过 EIC、改变温度程序/柱型、deconvolution 或标准品辅助判断。", "english": "Co-elution can distort both identification and semi-quantitative peak integration.", "trap": "不要默认一个 chromatographic peak 必然只代表一个化合物。", "level": "基础"}, {"id": "c023", "module": "Py-GC-MS", "q": "为什么复杂材料需要 pyrolysis？", "answer": "木材、塑料、树脂等高分子通常不能完整汽化进入 GC。<span class=\"key\">Pyrolysis</span> 在受控条件下把材料转化成较小、较挥发的产物，再由 GC-MS 分离识别。", "example": "Cellulose、lignin、PS、PMMA 等会产生各自具有特征的 pyrolysis patterns。", "english": "Controlled pyrolysis converts non-volatile macromolecular materials into analyzable products.", "trap": "不要说 pyrolysis 保留了原分子的完整结构。", "level": "基础"}, {"id": "c024", "module": "Py-GC-MS", "q": "Py-GC-MS 实际给你的是什么信息？", "answer": "它给出的是特定裂解条件下的 <span class=\"key\">pyrolysis fingerprint</span>。这个指纹同时受到 precursor structure、材料组成、添加剂、老化状态、温度、时间和基质影响。", "example": "同一种材料在不同裂解温度下，产物比例也可能改变。", "english": "Py-GC-MS provides a condition-dependent fingerprint of the material.", "trap": "不要把 pyrogram 当作原样自由化合物清单。", "level": "基础"}, {"id": "c025", "module": "Py-GC-MS", "q": "热裂解后检测到的化合物可能来自哪三类情况？", "answer": "① 原样中已有的低分子被释放；② 大分子或低聚物断裂形成产物；③ 裂解过程中经脱水、脱羧、重排、缩合等反应新生成产物。", "example": "Extractives 可能被释放；cellulose 可形成 levoglucosan；furans 可能在热反应中生成。", "english": "A detected pyrolysis product may be released, formed by bond cleavage, or newly created by secondary thermal reactions.", "trap": "看到产物 A，不要自动说原样中本来有游离 A。", "level": "基础"}, {"id": "c026", "module": "Py-GC-MS", "q": "从 pyrolysis product 应该反推什么？", "answer": "通常反推 <span class=\"key\">precursor structure</span>、<span class=\"key\">structural unit</span>、材料类别或降解过程，而非直接断言原样存在同一个自由小分子。", "example": "看到 styrene monomer–oligomer pattern 可支持 PS；看到 levoglucosan 可支持 cellulose-derived precursor。", "english": "I infer precursor structures from characteristic product patterns.", "trap": "反推要依赖 pattern、空白、标准和方法条件。", "level": "基础"}, {"id": "c027", "module": "Py-GC-MS", "q": "怎样判断一个峰更像原有小分子还是裂解生成物？", "answer": "比较 thermal desorption、溶剂萃取 GC-MS 与 pyrolysis；改变裂解温度；看标准品/reference pyrogram；看一组产物；结合空白与 carryover。", "example": "低温条件也出现，可能更像原有挥发/半挥发组分；只在高温出现并随温度上升，支持 thermal formation。", "english": "The distinction requires converging evidence rather than one pyrogram alone.", "trap": "单次 Py-GC-MS 通常不能百分之百区分。", "level": "基础"}, {"id": "c028", "module": "Py-GC-MS", "q": "为什么要看 pattern，而不是单峰？", "answer": "单峰可能来自污染、共洗脱或多个来源；一组相互关联的 monomer、fragment、oligomer 或同系物更有诊断力。", "example": "Styrene + styrene dimer/trimer-related products 比单独 styrene 更能支持 PS。", "english": "A characteristic product pattern is more reliable than a single peak.", "trap": "仍需 reference material 与 blank。", "level": "基础"}, {"id": "c029", "module": "Py-GC-MS", "q": "裂解温度为什么会改变结果？", "answer": "温度影响断键程度、初级/次级反应、产物挥发与残炭形成。温度太低可能裂解不充分；太高可能导致过度裂解与二次反应。", "example": "某 marker 只在高温显著增加，可能反映更多 thermal formation，而非原样含量增加。", "english": "Pyrolysis temperature changes product yields and secondary reaction pathways.", "trap": "不同温度下的峰面积不可脱离方法条件直接比较。", "level": "基础"}, {"id": "c030", "module": "Py-GC-MS", "q": "On-line Py-GC-MS 的特点是什么？", "answer": "裂解产物直接进入 GC-MS，传输快、损失相对少，适合获得整体裂解指纹；但峰可能更拥挤，也不一定方便某些选择性捕集和衍生化步骤。", "example": "适合快速、直接地观察复杂材料 pyrogram。", "english": "On-line pyrolysis provides rapid transfer and a broad fingerprint of pyrolysis products.", "trap": "不要说 on-line 一定优于 off-line。", "level": "基础"}, {"id": "c031", "module": "Py-GC-MS", "q": "Off-line Py-SPME-GC-MS 的特点是什么？", "answer": "样品先在独立 pyroprobe 中裂解，产物由 SPME fiber 富集后进入 GC-MS。它允许比较不同纤维并进行 on-fiber silylation，但会引入纤维选择性、吸附平衡和转移损失。", "example": "你的工作比较了 CAR/PDMS、PDMS/DVB、PA、PDMS 等纤维。", "english": "Off-line Py-SPME-GC-MS offers flexible enrichment and derivatization, but the resulting profile is selective.", "trap": "不要把 off-line profile 当作全部裂解产物。", "level": "基础"}, {"id": "c032", "module": "Py-GC-MS", "q": "为什么 pyrolysis products 不能叫原样中的 compounds？", "answer": "因为加热可能释放原有小分子，也可能切断高分子，还可能创造新的脱水、脱羧、重排或二次反应产物。更准确地说，它们是提供原材料结构信息的 thermal degradation products。", "example": "Furfural 可能由 pentose-rich precursors 在热裂解中形成。", "english": "Pyrolysis products do not necessarily mean that the same free compounds were originally present in the sample.", "trap": "这是口试高风险题，必须明确。", "level": "基础"}, {"id": "c033", "module": "SPME", "q": "SPME 的核心原理是什么？", "answer": "<span class=\"key\">Solid-phase microextraction</span> 利用带涂层的纤维，使分析物在样品/顶空与纤维涂层之间分配，并在规定时间和温度下富集。", "example": "它像一块有选择性的海绵，不同涂层偏爱不同大小和极性的分子。", "english": "SPME is based on partitioning between the sample or headspace and a coated fiber.", "trap": "它是 selective enrichment，不是把所有目标物完全抽走。", "level": "基础"}, {"id": "c034", "module": "SPME", "q": "为什么说 SPME 不是 exhaustive extraction？", "answer": "SPME 通常只在相间建立一定分配，不会把样品中全部分析物完全提取出来。因此峰面积取决于分配平衡、纤维容量和条件控制。", "example": "不同温度和时间会改变 headspace 与 coating 中的分配。", "english": "SPME is selective rather than exhaustive.", "trap": "不能把 SPME 峰面积直接等同于样品总量。", "level": "基础"}, {"id": "c035", "module": "SPME", "q": "CAR/PDMS 更适合关注什么？", "answer": "<span class=\"key\">CAR/PDMS</span> 中 CAR 的微孔结构有利于富集较小、较挥发的分子；PDMS 部分偏非极性。", "example": "可用于比较小分子 volatile pyrolysis products。", "english": "CAR/PDMS is often suitable for relatively small volatile compounds.", "trap": "实际选择仍依赖目标物与方法条件。", "level": "基础"}, {"id": "c036", "module": "SPME", "q": "PDMS/DVB、PA、PDMS 的选择性怎么记？", "answer": "<span class=\"key\">PDMS/DVB</span> 覆盖较宽的 VOC/SVOC 与芳香/含氧化合物；<span class=\"key\">PA</span> 较极性；<span class=\"key\">PDMS</span> 更偏非极性、疏水性分析物。", "example": "不同纤维得到不同 chromatographic profile，代表不同选择窗口。", "english": "Different coatings provide different selectivity windows.", "trap": "一个纤维信号少，不代表它“错了”。", "level": "基础"}, {"id": "c037", "module": "SPME", "q": "SPME 比较实验必须控制哪些条件？", "answer": "<span class=\"key\">Extraction time</span>、temperature、sample amount、headspace volume、salt、pH、moisture、搅拌、fiber aging 和 carryover。", "example": "时间延长常增加富集，直到接近平衡或饱和；升温既促进挥发，也可能降低涂层分配。", "english": "Fiber type, time, temperature, matrix, and carryover must be controlled.", "trap": "样品之间条件不一致时，峰趋势难以解释。", "level": "基础"}, {"id": "c038", "module": "SPME", "q": "为什么升温对 SPME 有双重影响？", "answer": "升温可促进分析物从样品进入顶空，但也可能降低其在纤维涂层中的分配，因此最终信号取决于两种作用的平衡。", "example": "不能简单说温度越高，SPME 信号一定越强。", "english": "Temperature can enhance volatilization while reducing coating affinity.", "trap": "要通过方法优化寻找合适条件。", "level": "基础"}, {"id": "c039", "module": "SPME", "q": "Fiber carryover 怎么识别？", "answer": "前一个样品残留在纤维上，可能在下一次分析中继续释放。可通过 fiber blank、连续空白、峰是否逐步下降和高浓度样品后的出现规律判断。", "example": "如果某峰只在高信号样品后的 blank 中出现，更要怀疑 carryover。", "english": "Fiber blanks help distinguish carryover from sample-derived signals.", "trap": "不要把 carryover 峰当成低浓度真实样品峰。", "level": "基础"}, {"id": "c040", "module": "Silylation", "q": "Derivatization 与 silylation 是什么关系？", "answer": "<span class=\"key\">Derivatization</span> 是把分析物转成更适合仪器分析的衍生物；<span class=\"key\">silylation</span> 是其中一种，常把含活泼氢的基团转成 trimethylsilyl derivatives。", "example": "适用于含 -OH、-COOH、-NH 等基团的极性化合物。", "english": "Silylation is a derivatization strategy used to improve GC compatibility.", "trap": "衍生化是前处理，不是研究结论本身。", "level": "基础"}, {"id": "c041", "module": "Silylation", "q": "为什么 silylation 能改善 GC 分析？", "answer": "TMS group 替代 O-H 或 N-H 中的活泼氢，减少氢键和极性，通常提高挥发性、热稳定性并改善峰形。", "example": "Levoglucosan 含多个 -OH，形成 TMS derivatives 后更容易检测。", "english": "Silylation usually reduces polarity and improves volatility and chromatographic behavior.", "trap": "不同官能团反应程度可能不同。", "level": "基础"}, {"id": "c042", "module": "Silylation", "q": "BSTFA、TMCS、pyridine 各扮演什么角色？", "answer": "<span class=\"key\">BSTFA</span> 提供 silylating reagent；<span class=\"key\">TMCS</span> 常作为促进剂；<span class=\"key\">pyridine</span> 可作为溶剂和碱性环境的一部分。", "example": "你的实验使用 BSTFA with 1% TMCS 与 pyridine 进行 on-fiber headspace silylation。", "english": "BSTFA provides the silylating reagent, while TMCS promotes the reaction.", "trap": "只说你能确认的实验细节。", "level": "基础"}, {"id": "c043", "module": "Silylation", "q": "为什么水分会干扰 silylation？", "answer": "水含有活泼氢，会消耗 silylating reagent，造成目标物衍生化不完全，峰面积下降或出现不同程度衍生物。", "example": "潮湿样品或试剂体系需要特别控制水分。", "english": "Moisture consumes the silylating reagent and can lead to incomplete derivatization.", "trap": "不要把衍生化不完全误判为样品中目标物减少。", "level": "基础"}, {"id": "c044", "module": "Silylation", "q": "Silylation 会带来哪些分析风险？", "answer": "水分消耗试剂、不同官能团反应率不同、试剂/硅氧烷背景峰、一个化合物形成多种 TMS derivatives，以及峰面积难直接换算原始浓度。", "example": "因此 reagent blank 和统一反应条件很重要。", "english": "Incomplete derivatization and reagent background can affect both identification and comparison.", "trap": "不要把不同衍生化条件下的峰面积直接比较。", "level": "基础"}, {"id": "c045", "module": "Silylation", "q": "检测到 TMS derivative 时，应该怎样解释？", "answer": "仪器检测的是衍生物峰，但化学解释指向衍生化前的原始化合物或其 precursor。定性时要知道增加了 TMS group，质谱也会改变。", "example": "Levoglucosan-TMS 峰用于支持 levoglucosan-derived signal。", "english": "The detected peak is the derivative, while the interpretation refers to the original analyte.", "trap": "不要把衍生物当作样品中原本存在的物质。", "level": "基础"}, {"id": "c046", "module": "Molecular markers", "q": "Molecular marker 到底是什么？", "answer": "它是提示材料来源、结构单元、反应过程或处理差异的 chemical clue。可靠性来自 specificity、product pattern、趋势、重复性、空白、标准品和样品背景。", "example": "一个 furfural 峰只是线索；furfural + 5-HMF + furanones + 整体趋势更有说服力。", "english": "A molecular marker is a chemical clue that supports interpretation within a defined analytical context.", "trap": "不要把一个 marker 当作绝对证明。", "level": "基础"}, {"id": "c047", "module": "Molecular markers", "q": "Marker 可以分成哪些层级？", "answer": "<span class=\"key\">Source/material marker</span> 提示材料类别；<span class=\"key\">structural marker</span> 提示结构单元；<span class=\"key\">process marker</span> 提示反应；<span class=\"key\">condition marker</span> 只在特定实验条件下用于比较。", "example": "Styrene-rich pattern 是 material marker；guaiacol-related products 是 structural marker；furans 可作 process clues。", "english": "Markers can indicate material source, structural units, processes, or condition-dependent responses.", "trap": "Condition marker 未必能推广到别的裂解条件。", "level": "基础"}, {"id": "c048", "module": "Molecular markers", "q": "什么使一个 marker 更可靠？", "answer": "高特异性、可重复、一组相关产物、趋势一致、空白干净、标准/reference materials 支持，并与样品化学背景和其他技术一致。", "example": "PS 的 monomer–dimer–trimer pattern 比单独 styrene 更可靠。", "english": "Marker reliability depends on specificity, reproducibility, patterns, blanks, and contextual agreement.", "trap": "优先说 suggests / supports / is consistent with。", "level": "基础"}, {"id": "c049", "module": "Molecular markers", "q": "看到 Furfural，优先想到什么？", "answer": "优先想到 pentose-rich carbohydrates 与 hemicellulose-related degradation，形成常涉及糖类 dehydration。", "example": "老化或处理后 furfural 相对升高，可说 carbohydrate-related degradation signal 更明显。", "english": "An increase in furfural is consistent with enhanced carbohydrate-related degradation, especially pentose-rich components.", "trap": "不能说只来自 hemicellulose，也不能说原样一定含游离 furfural。", "level": "基础"}, {"id": "c050", "module": "Molecular markers", "q": "看到 5-HMF，优先想到什么？", "answer": "优先想到 hexose-derived dehydration products，可与 cellulose/hexose-related degradation 一起讨论。", "example": "与 furfural、levoglucosan 和其他 carbohydrate markers 同时看。", "english": "5-HMF can support the interpretation of hexose-derived degradation.", "trap": "它不是 cellulose 的唯一专属 marker。", "level": "基础"}, {"id": "c051", "module": "Molecular markers", "q": "看到 Levoglucosan，优先想到什么？", "answer": "它是经典 cellulose/glucan-derived pyrolysis product，提示 cellulose-like precursor structures。", "example": "用于支持 cellulose-related pyrolysis profile。", "english": "Levoglucosan is a diagnostic cellulose-derived pyrolysis product.", "trap": "它是裂解产物，不等于原样有大量游离 levoglucosan；产率受温度、无机物和基质影响。", "level": "基础"}, {"id": "c052", "module": "Molecular markers", "q": "看到 2-Furanmethanol 或 2(5H)-Furanone，想到什么？", "answer": "它们可作为 carbohydrate thermal degradation 的补充线索，与 furans/furanones 组合一起解释。", "example": "适合说它们 contribute to a broader carbohydrate-degradation pattern。", "english": "These compounds support a broader carbohydrate-degradation profile.", "trap": "单独特异性有限。", "level": "基础"}, {"id": "c053", "module": "Molecular markers", "q": "看到 Guaiacol / 4-vinylguaiacol，想到什么？", "answer": "优先想到 G-lignin / guaiacyl units 及其 cleavage 或 transformation。", "example": "可与 syringyl-derived products 对照讨论 G/S-related response。", "english": "Guaiacol-related products indicate guaiacyl-type lignin structures or their transformation.", "trap": "峰增加不等于 G-lignin 含量一定增加，也可能是裂解产率改变。", "level": "基础"}, {"id": "c054", "module": "Molecular markers", "q": "看到 Syringol / 2,6-dimethoxy-4-vinylphenol，想到什么？", "answer": "优先想到 S-lignin / syringyl units；与 G-type products 比较可讨论 S/G-related response。", "example": "在不同处理间比较 syringyl-derived profile 的相对变化。", "english": "Syringyl-derived products can help compare the response of S-type lignin structures.", "trap": "Py-GC-MS 峰比不能直接当作绝对 S/G composition。", "level": "基础"}, {"id": "c055", "module": "Molecular markers", "q": "看到 Vanillin / Syringaldehyde，想到什么？", "answer": "它们是含 carbonyl 的 lignin-related aromatic aldehydes，可与 lignin oxidation / oxidative transformation 联系。", "example": "与 guaiacol、syringol 及其他低分子 phenolics 一起讨论。", "english": "Vanillin and syringaldehyde are consistent with lignin-related oxidative transformation.", "trap": "它们不能单独证明唯一氧化机理，也可能在热裂解中形成或释放。", "level": "基础"}, {"id": "c056", "module": "Molecular markers", "q": "看到 1,2-Cyclopentanedione，想到什么？", "answer": "可放在 carbohydrate pyrolysis / rearrangement products 的背景中，是糖类热降解 profile 的一部分。", "example": "与 furans、furanones 和其他糖类来源产物一起看。", "english": "It can contribute to the interpretation of carbohydrate-derived pyrolysis chemistry.", "trap": "来源不唯一，不能独立判定 cellulose 或 hemicellulose。", "level": "基础"}, {"id": "c057", "module": "Molecular markers", "q": "看到 C16 / C18 fatty acids，想到什么？", "answer": "可提示 fatty acids / lipophilic extractives；趋势变化可讨论 extractive-related profile 的改变。", "example": "n-Hexadecanoic acid 与 n-Octadecanoic acid 的保留或下降可作为提取物变化线索。", "english": "Changes in C16 and C18 fatty acids suggest modifications of lipophilic extractives.", "trap": "不能单独证明 hydrophobicity；下降也可能来自氧化、挥发、提取效率或响应变化。", "level": "基础"}, {"id": "c058", "module": "Molecular markers", "q": "看到 Styrene-rich pattern，想到什么？", "answer": "优先想到 polystyrene。Styrene monomer 加上 dimer/trimer-related products 比单峰更有说服力。", "example": "与 PS reference pyrogram 和 blank 对照。", "english": "A characteristic styrene monomer–oligomer pattern strongly supports polystyrene.", "trap": "单独 styrene 可能来自污染或其他 styrenic materials。", "level": "基础"}, {"id": "c059", "module": "Molecular markers", "q": "看到 Methyl methacrylate，想到什么？", "answer": "可提示 PMMA depolymerization，因为 PMMA 热裂解常表现出明显 monomer recovery。", "example": "与完整 pyrogram、标准品和空白配合。", "english": "Methyl methacrylate is a useful diagnostic pyrolysis product for PMMA.", "trap": "不要只凭一个 MMA 峰绝对定案。", "level": "基础"}, {"id": "c060", "module": "Molecular markers", "q": "看到 Caprolactam，想到什么？", "answer": "可提示 nylon-6 / polycaprolactam。", "example": "需要放在适当 polymer-pyrolysis context 中，并排除游离 caprolactam 或背景。", "english": "Caprolactam can support nylon-6 identification.", "trap": "单峰仍需标准与空白。", "level": "基础"}, {"id": "c061", "module": "Molecular markers", "q": "看到 Alkane/alkene homologous series，想到什么？", "answer": "PE/PP 热裂解常出现同系烃系列；碳数分布、支化模式和 reference pyrogram 有助区分 polyolefins。", "example": "一组 alkane/alkene/diene pattern 比“看到一个烃”更有意义。", "english": "A homologous hydrocarbon pattern can support polyolefin identification.", "trap": "看到烃不等于一定有 PE/PP。", "level": "基础"}, {"id": "c062", "module": "Molecular markers", "q": "想判断 carbohydrate degradation，应关注哪些证据？", "answer": "同时看 furfural、5-HMF、levoglucosan、furanones、cyclopentanedione 等是否形成一致趋势，并结合 treatment、aging 和整体 pyrogram。", "example": "强调 pattern 与 relative trends。", "english": "I would evaluate a group of carbohydrate-derived products rather than relying on a single marker.", "trap": "一个峰不能承担整个结论。", "level": "基础"}, {"id": "c063", "module": "Molecular markers", "q": "想判断 lignin structural response，应关注什么？", "answer": "同时比较 guaiacyl- 与 syringyl-derived products、芳香醛、低分子 phenolics，并考虑峰增加可能来自更多裂解或产率变化。", "example": "Guaiacol/syringol/vanillin/syringaldehyde 组成一个更完整的 lignin-related picture。", "english": "I would compare G- and S-derived products together with oxidized aromatic markers.", "trap": "不要把某一峰增加直接说成 lignin 含量增加。", "level": "基础"}, {"id": "c064", "module": "Molecular markers", "q": "想判断 anti-aging performance，应该怎样做？", "answer": "在相同老化条件下比较 treated vs untreated 的 marker trends，检查重复性，并结合 FTIR、颜色、物理/机械测试等 complementary evidence。", "example": "在你的课题中可说 N.I. 在受控条件下显示更有利的 chemical profile。", "english": "Under the tested conditions, the treatment showed a more favorable chemical profile.", "trap": "不要只凭一个 marker 宣称 definitively anti-aging。", "level": "基础"}, {"id": "c065", "module": "Molecular markers", "q": "想判断 hydrophobicity 或 mechanical performance，GC-MS 够吗？", "answer": "GC-MS 化学信号只能提供间接线索。Hydrophobicity 需要 contact angle / water uptake；机械性能需要力学测试。", "example": "C16/C18 的变化不能直接证明防水性。", "english": "Chemical profiles should be complemented by direct physical measurements.", "trap": "不要从 extractives 峰直接推出宏观性能。", "level": "基础"}, {"id": "c066", "module": "定量与质量控制", "q": "Qualitative、semi-quantitative、quantitative 有什么区别？", "answer": "<span class=\"key\">Qualitative</span> 关注有没有、可能是什么；<span class=\"key\">semi-quantitative</span> 比较相对趋势；<span class=\"key\">quantitative</span> 把响应换成可追溯浓度，需要校准与验证。", "example": "你的 thesis 主要是 comparative / semi-quantitative。", "english": "My work was mainly comparative and semi-quantitative rather than fully validated quantification.", "trap": "不要为了显得高级而把 relative peak area 说成 absolute concentration。", "level": "基础"}, {"id": "c067", "module": "定量与质量控制", "q": "为什么 peak area 不等于 concentration？", "answer": "不同化合物的 MS response factor 不同，SPME 提取效率、衍生化率、进样量、基质、共洗脱和积分都会影响 area。", "example": "同样浓度的两个化合物，峰面积可能很不一样。", "english": "Peak area is affected by response, extraction, derivatization, matrix, and integration.", "trap": "只有校准和验证后才能更可靠地换算浓度。", "level": "基础"}, {"id": "c068", "module": "定量与质量控制", "q": "Calibration curve 是什么？", "answer": "用一系列已知浓度标准建立浓度与仪器响应之间的关系，再用未知样品响应估算浓度。", "example": "需关注线性范围、残差、标准品和基质匹配。", "english": "A calibration curve relates known concentration to analytical response.", "trap": "一条直线好看不等于方法已完整验证。", "level": "基础"}, {"id": "c069", "module": "定量与质量控制", "q": "Internal standard 有什么作用？", "answer": "向样品和标准中加入固定量参照物，用于校正进样、前处理或仪器波动。理想内标应与目标物行为相似但可区分。", "example": "同位素标记内标常很有价值，但具体取决于目标物和预算。", "english": "An internal standard helps correct analytical variability.", "trap": "内标不能自动修正所有 matrix effects。", "level": "基础"}, {"id": "c070", "module": "定量与质量控制", "q": "Recovery 是什么？", "answer": "向真实基质中加入已知量目标物，完成整个分析流程后看能找回多少，用于评估样品前处理和基质导致的损失。", "example": "环境微塑料分析可向沉积物中加入已知聚合物颗粒进行 recovery test。", "english": "Recovery evaluates how much of a known spike is retrieved from the full method.", "trap": "Recovery 高也要看 precision 与污染控制。", "level": "基础"}, {"id": "c071", "module": "定量与质量控制", "q": "Precision / repeatability 是什么？", "answer": "重复测量的一致程度。Technical replicates 主要反映分析流程波动；independent sample replicates 更能反映样品异质性。", "example": "只有一条 chromatogram 很难判断趋势是否稳定。", "english": "Repeatability describes consistency under the same conditions.", "trap": "Precision 好不等于 accuracy 一定好。", "level": "基础"}, {"id": "c072", "module": "定量与质量控制", "q": "LOD 和 LOQ 有什么区别？", "answer": "<span class=\"key\">LOD</span> 是可可靠区分于背景的最低检测水平；<span class=\"key\">LOQ</span> 是能以可接受准确度和精密度定量的最低水平，通常高于 LOD。", "example": "低浓度 nanoplastics 或 additives 分析尤其需要说明检测能力。", "english": "LOD concerns detection, while LOQ concerns reliable quantification.", "trap": "不要把“看见一个峰”自动称为低于某个 LOD。", "level": "基础"}, {"id": "c073", "module": "定量与质量控制", "q": "Tentative identification 是什么意思？", "answer": "表示候选物识别由谱库、RT、特征离子、文献和样品背景支持，但缺少标准品或更强证据，尚不应写成 unequivocally confirmed。", "example": "你的很多 compound assignments 最适合用 tentative。", "english": "The compound was tentatively identified based on spectral and contextual evidence.", "trap": "谨慎表述不会削弱你，反而显示证据意识。", "level": "基础"}, {"id": "c074", "module": "定量与质量控制", "q": "Instrument blank、procedural blank、reagent blank 有什么区别？", "answer": "<span class=\"key\">Instrument blank</span> 检查仪器与传输系统；<span class=\"key\">procedural blank</span> 走完整流程但不加样品；<span class=\"key\">reagent blank</span> 重点检查溶剂和衍生化试剂。", "example": "BSTFA/TMCS 体系需要 reagent blank；完整 Py-SPME 流程需要 procedural/fiber blank。", "english": "Different blanks locate contamination at different stages of the workflow.", "trap": "只做一种 blank 未必能定位污染来源。", "level": "基础"}, {"id": "c075", "module": "定量与质量控制", "q": "Field blank 与 fiber blank 分别有什么用？", "answer": "<span class=\"key\">Field blank</span> 检查环境采样、运输和现场污染；<span class=\"key\">fiber blank</span> 检查 SPME fiber 本身、老化和 carryover。", "example": "Microplastics 分析中特别要防空气纤维和容器污染。", "english": "Field and fiber blanks help separate sample signals from contamination.", "trap": "Blank 本身也可能有背景，应记录并比较。", "level": "基础"}, {"id": "c076", "module": "定量与质量控制", "q": "Carryover 怎么判断？", "answer": "看连续 blank、峰是否逐步下降、是否总跟在高信号样品之后出现，并检查进样口、柱、传输线和纤维清洗。", "example": "高浓度样品后出现同样峰，是典型警报。", "english": "Carryover is residual signal transferred from a previous analysis.", "trap": "不能把残留峰解释成样品真实低浓度。", "level": "基础"}, {"id": "c077", "module": "定量与质量控制", "q": "Replicate 与 reproducibility 有什么区别？", "answer": "Replicate 是同一条件下重复；reproducibility 更强调不同时间、操作者、仪器或实验室下结果能否保持一致。", "example": "博士方法开发最终要从 repeatability 走向更广泛的 reproducibility。", "english": "Replicates estimate variability, while reproducibility tests broader method consistency.", "trap": "技术重复不能完全代表材料样品差异。", "level": "基础"}, {"id": "c078", "module": "Matrix effect", "q": "Matrix 和 matrix effect 是什么？", "answer": "<span class=\"key\">Matrix</span> 是目标物之外的全部样品背景；<span class=\"key\">matrix effect</span> 是这些背景对提取、衍生化、分离、检测或解释的影响。", "example": "水样的盐/天然有机质、沉积物的腐殖质/矿物、木材的 cellulose/lignin/extractives 都属于 matrix。", "english": "Matrix components can affect every stage from extraction to interpretation.", "trap": "Matrix effect 在 GC-MS 中不只等于 ion suppression。", "level": "基础"}, {"id": "c079", "module": "Matrix effect", "q": "水样和沉积物中的 matrix effect 可以怎样举例？", "answer": "水样中的盐、天然有机质和悬浮颗粒可改变分配、SPME extraction 和 recovery；沉积物中的腐殖质、矿物和黑碳可遮蔽颗粒、吸附添加剂或产生热裂解背景。", "example": "真实环境样品比纯标准复杂得多。", "english": "Environmental matrices introduce interferences, losses, and contamination risks.", "trap": "不要说复杂基质只是“杂质多”这么简单。", "level": "基础"}, {"id": "c080", "module": "Matrix effect", "q": "你的木材样品也算 complex material matrix 吗？", "answer": "木材由 cellulose、hemicellulose、lignin 和 extractives 共同组成，化学上确实复杂；但它不是 Position 2 所说的 real complex environmental matrix（如水、土壤、沉积物、污泥）。", "example": "可说 complex organic/material system under controlled aging。", "english": "My thesis involved a chemically complex material under controlled aging, not a real environmental matrix.", "trap": "不要把 QUV aging 说成 complex environmental matrix。", "level": "基础"}, {"id": "c081", "module": "Matrix effect", "q": "GC-MS 中 matrix effect 可以表现在哪些环节？", "answer": "萃取竞争、进样口吸附、衍生化抑制、共洗脱、column/source contamination、信号响应变化和积分困难。", "example": "这比 LC-ESI-MS 中常讲的 ion suppression 更宽。", "english": "In GC-MS, matrix effects can influence extraction, derivatization, injection, separation, detection, and integration.", "trap": "需要根据方法具体说明。", "level": "基础"}, {"id": "c082", "module": "Method development", "q": "Method development 的完整含义是什么？", "answer": "围绕具体研究问题建立从样品到结论的完整流程：定义目标、认识 matrix、选择前处理和技术、建立识别标准、验证可靠性、说明限制。", "example": "它不是只调一个温度或换一根柱。", "english": "Method development means designing and validating a complete analytical workflow for a specific question.", "trap": "不要把参数优化等同于完整方法开发。", "level": "基础"}, {"id": "c083", "module": "Method development", "q": "方法开发第一步为什么是明确 research question？", "answer": "因为想知道 polymer type、particle number、mass concentration、additives、weathering products 或 degradation mechanism，所需方法完全不同。", "example": "同一个样品也可能需要不同输出指标。", "english": "The analytical method must be designed around the intended measurand and research question.", "trap": "先选仪器再找问题，容易方法与目标错位。", "level": "基础"}, {"id": "c084", "module": "Method development", "q": "怎样根据 matrix 设计 sample preparation？", "answer": "考虑过滤、密度分离、消解天然有机质、萃取 additives、SPME、derivatization 或直接 pyrolysis，并评估每一步造成的损失和污染。", "example": "沉积物微塑料常需先去除天然有机质和矿物干扰。", "english": "Sample preparation should isolate the target while minimizing loss and contamination.", "trap": "前处理越复杂，不一定越好。", "level": "基础"}, {"id": "c085", "module": "Method development", "q": "Identification criteria 应包括什么？", "answer": "Spectral match、characteristic ions、RT window、reference materials、最低信噪比、人工复核和 blank rules。", "example": "可预先规定什么证据达到 tentative，什么证据达到 confirmed。", "english": "Identification criteria should be predefined and transparent.", "trap": "不能看完数据后随意改标准以迎合结果。", "level": "基础"}, {"id": "c086", "module": "Method development", "q": "Validation 应至少考虑哪些指标？", "answer": "Blanks、recovery、repeatability/precision、selectivity、LOD/LOQ、robustness、uncertainty，以及真实基质适用性。", "example": "博士阶段你需要把已有 comparative workflow 扩展为更严格 validated method。", "english": "Validation evaluates whether the method is reliable for its intended purpose.", "trap": "不要声称自己已经完成完整 validation。", "level": "基础"}, {"id": "c087", "module": "Method development", "q": "Complementary techniques 为什么重要？", "answer": "不同技术回答的问题不同：光谱可给 particle identity，Py-GC-MS 给化学/质量指纹，显微镜给形貌，粒径技术给悬浮颗粒信息。组合证据能降低单一方法偏差。", "example": "No single technique simultaneously provides size, shape, polymer identity, particle number and mass.", "english": "Complementary techniques provide orthogonal evidence.", "trap": "组合技术也要明确样品是否可比较。", "level": "基础"}, {"id": "c088", "module": "Micro-/Nanoplastics", "q": "真实塑料样品除了 polymer backbone 还有什么？", "answer": "还可能含 plasticizers、stabilizers、pigments、fillers、残留单体、老化产物和吸附污染物。", "example": "GC-MS 看到的信号可能来自 polymer、additives 或 degradation products。", "english": "Environmental plastic signals can originate from the polymer, additives, aging products, or sorbed contaminants.", "trap": "不要把所有峰都归因于 polymer backbone。", "level": "基础"}, {"id": "c089", "module": "Micro-/Nanoplastics", "q": "Primary 与 secondary microplastics 有什么区别？", "answer": "<span class=\"key\">Primary microplastics</span> 本来就以小尺寸制造或使用；<span class=\"key\">secondary microplastics</span> 由较大塑料经 UV、机械磨损、氧化和水解等过程破碎形成。", "example": "工业微珠属于 primary；老化包装碎片和纤维可属于 secondary。", "english": "Secondary microplastics originate from fragmentation and weathering of larger plastics.", "trap": "具体分类会受来源和定义影响。", "level": "基础"}, {"id": "c090", "module": "Micro-/Nanoplastics", "q": "为什么粒径越小越难分析？", "answer": "更难从胶体、天然有机质和矿物中分离；浓度低且分布不均；易聚集；空白污染比例更高；许多显微光谱技术受空间分辨率限制。", "example": "Nanoplastics 往往需要多技术组合。", "english": "Smaller particles are more difficult to isolate, identify, count, and validate.", "trap": "尺寸小不只意味着仪器分辨率问题。", "level": "基础"}, {"id": "c091", "module": "Micro-/Nanoplastics", "q": "Particle number 和 mass concentration 为什么可能讲出不同故事？", "answer": "大量很小的颗粒可具有很高 particle number，但总质量很低；少量大颗粒则可能质量高但数量少。", "example": "研究生态暴露时两种指标可能都重要。", "english": "Particle number and mass concentration describe different aspects of contamination.", "trap": "口试时先说明输出指标。", "level": "基础"}, {"id": "c092", "module": "Micro-/Nanoplastics", "q": "比表面积增加会带来什么？", "answer": "颗粒越小，surface area-to-volume ratio 越大，更易发生表面氧化、吸附污染物、形成 biofilm、聚集和界面反应。", "example": "这也是 nanoscale behavior 与宏观材料不同的重要原因。", "english": "A higher surface-area-to-volume ratio enhances interfacial interactions.", "trap": "不要把所有纳米效应都只归因于尺寸。", "level": "基础"}, {"id": "c093", "module": "Micro-/Nanoplastics", "q": "Optical microscopy 能回答什么，不能回答什么？", "answer": "可观察大小、形状、颜色和可见颗粒，但通常不能可靠确认 polymer identity，尤其对更小颗粒和透明颗粒。", "example": "适合初筛和形貌记录。", "english": "Optical microscopy provides morphology but limited chemical identity.", "trap": "看起来像塑料不等于已确认是塑料。", "level": "基础"}, {"id": "c094", "module": "Micro-/Nanoplastics", "q": "µFTIR / Raman 能回答什么？", "answer": "通过振动光谱给 polymer identity，并可做 particle mapping；但受粒径、荧光、颜料、表面老化和基质干扰。", "example": "Raman 空间分辨率通常较高，但 fluorescence 可能严重。", "english": "Vibrational spectroscopy can identify individual particles, subject to size and matrix limitations.", "trap": "不要说任何尺寸都能轻松分析。", "level": "基础"}, {"id": "c095", "module": "Micro-/Nanoplastics", "q": "Py-GC-MS 在微塑料分析中的优势与限制是什么？", "answer": "优势是把聚合物转成 chemical fingerprint，可识别并在合适校准下定量 polymer mass；限制是通常不能保留单颗粒形状、数量和原始粒径。", "example": "适合回答“有哪些聚合物、总质量多少”，不直接回答“有多少颗粒、长什么样”。", "english": "Py-GC-MS provides polymer-specific chemical fingerprints but generally loses particle-level morphology.", "trap": "需要注意 matrix pyrolysis background。", "level": "基础"}, {"id": "c096", "module": "Micro-/Nanoplastics", "q": "SEM-EDX 能回答什么？", "answer": "SEM 给高分辨形貌；EDX 给元素组成。它有助于观察表面和无机填料，但 EDX 不能直接确认有机 polymer identity。", "example": "含 Ti、Ca 等元素可提示填料或表面沉积，但不是聚合物身份证。", "english": "SEM-EDX provides morphology and elemental information.", "trap": "不要把 carbon-rich EDX 结果直接等同于塑料。", "level": "基础"}, {"id": "c097", "module": "Micro-/Nanoplastics", "q": "DLS 的原理、适用场景和限制是什么？", "answer": "DLS 根据散射强度波动估算 hydrodynamic size，适合相对简单、近似球形、较窄分布的悬浮体系；复杂多分散环境样品容易被大颗粒主导。", "example": "它给的是等效水动力尺寸，不是直接显微尺寸。", "english": "DLS estimates hydrodynamic size and is sensitive to polydispersity and larger particles.", "trap": "不适合把复杂样品的一个平均值当作完整粒径分布。", "level": "基础"}, {"id": "c098", "module": "Micro-/Nanoplastics", "q": "NTA 的原理与限制是什么？", "answer": "NTA 追踪单个散射颗粒的 Brownian motion，估算 size 和 number concentration；受折射率、浓度、异质性和非塑料颗粒干扰。", "example": "比 DLS 更接近 particle-by-particle tracking，但仍不自动提供 polymer identity。", "english": "NTA estimates particle size and number from tracked Brownian motion.", "trap": "环境基质中的非塑料颗粒会造成假信号。", "level": "基础"}, {"id": "c099", "module": "Micro-/Nanoplastics", "q": "为什么说 no single technique is sufficient？", "answer": "因为没有单一方法同时给出 size、shape、polymer identity、particle number、mass concentration 和表面化学。真实研究需要分离、显微/光谱、热分析和粒径技术组合。", "example": "先明确问题，再选择互补技术。", "english": "No single technique provides all relevant information for micro- and nanoplastics.", "trap": "多技术不代表把所有仪器都用一遍。", "level": "基础"}, {"id": "c100", "module": "你的课题与Position 2", "q": "你真正能证明的核心优势是什么？", "answer": "长期进行 GC-MS-based analytical characterization；熟悉 off-line/on-line pyrolysis、SPME、silylation、blank/carryover、chromatogram 与 mass spectrum interpretation、marker patterns 和批次数据比较。", "example": "这是一套可迁移的 analytical workflow。", "english": "My strongest training is analytical chemistry applied to complex organic and material systems.", "trap": "不要把自己包装成已经完成微塑料方法开发。", "level": "基础"}, {"id": "c101", "module": "你的课题与Position 2", "q": "样品制备和 QUV aging 是你做的吗？", "answer": "Nakdong-Iron / Gas-torch mock-ups 与 QUV-aged samples 由合作项目提供或完成。你的核心 hands-on contribution 是 GC-MS analytical part、数据处理、候选物识别和 marker interpretation。", "example": "面试中主动分清 project design 与 personal contribution。", "english": "The treated and aged samples were provided within the collaboration; my main contribution was the GC-MS analytical work and interpretation.", "trap": "不要说 I prepared the samples 或 I performed QUV aging。", "level": "基础"}, {"id": "c102", "module": "你的课题与Position 2", "q": "QUV aging 可以准确说到什么程度？", "answer": "样品经历了 up to four weeks 的 controlled accelerated UV aging。前期材料记录 UV-A 340 nm、60°C、0.77 W/m²。没有确认的 condensation/humidity cycles 不要自行补充。", "example": "用 controlled accelerated photo-aging / UV aging。", "english": "The samples underwent controlled accelerated UV aging for up to four weeks.", "trap": "不要叫 complex environmental matrix。", "level": "基础"}, {"id": "c103", "module": "你的课题与Position 2", "q": "为什么你的受控体系仍能连接 Position 2？", "answer": "它训练你把材料处理、化学信号、marker trends 与分析边界连接起来。博士阶段可把这套思维迁移到更真实的 water/soil/sediment matrices，并学习 separation、contamination control、matrix effects 和 validation。", "example": "连接点是 analytical method logic，不是样品对象完全相同。", "english": "I am motivated to extend my analytical experience from controlled systems to more complex and realistic environmental samples.", "trap": "不要假装已有真实环境微塑料经验。", "level": "基础"}, {"id": "c104", "module": "你的课题与Position 2", "q": "OpenChrom 这个经历怎样讲才有价值？", "answer": "它证明你没有停在导师教的标准软件，而是主动探索额外工具，用于 chromatogram inspection、peak tables、RT alignment 和批次比较。", "example": "重点是 self-directed learning 与 data handling。", "english": "I independently explored OpenChrom to build a more flexible workflow for chromatogram and peak-table comparison.", "trap": "不要夸大成开发了完整新软件或验证平台。", "level": "基础"}, {"id": "c105", "module": "你的课题与Position 2", "q": "你的工作是 quantitative 吗？", "answer": "主要是 comparative 和 semi-quantitative：利用 normalized peak-area trends 与 marker patterns 比较样品；未建立完整校准、回收率、LOD/LOQ 和精密度验证。", "example": "这体现你知道结果边界。", "english": "I used peak-area trends and molecular-marker patterns rather than claiming validated absolute concentrations.", "trap": "不要把 relative abundance 叫 concentration。", "level": "基础"}, {"id": "c106", "module": "你的课题与Position 2", "q": "怎样更谨慎地说 N.I. 的 anti-aging 结论？", "answer": "可说：在所测试的受控条件下，N.I. 相比 G.T. 显示更有利的 chemical profile；真实长期耐久性仍需更多重复、物理性能和真实环境验证。", "example": "强调 under the tested conditions。", "english": "Under the tested controlled conditions, N.I. showed a more favorable chemical profile than G.T.", "trap": "避免 definitively anti-aging。", "level": "基础"}, {"id": "c107", "module": "你的课题与Position 2", "q": "为什么不能从 C16/C18 直接推 hydrophobicity？", "answer": "脂肪酸峰可提示 lipophilic extractive profile，但宏观 hydrophobicity 还受表面结构和化学组成共同影响，需要 contact angle、water uptake 等直接测试。", "example": "GC-MS 提供间接化学线索。", "english": "The fatty-acid profile provides indirect chemical information, while hydrophobicity requires direct physical testing.", "trap": "不要把“保留脂肪酸”写成“已经证明防水性提高”。", "level": "基础"}, {"id": "c108", "module": "你的课题与Position 2", "q": "为什么不能仅凭 GC-MS 说发生 cross-linking？", "answer": "GC-MS 观察到的是可裂解/可挥发产物 profile。Cross-linking 是固相网络结构变化，需要 solid-state NMR、spectroscopy 或其他直接结构证据支持。", "example": "你可以说 trends are consistent with a more stable lignin-derived profile。", "english": "The GC-MS trends may be consistent with stabilization, but they do not directly prove cross-linking.", "trap": "不要把推测写成直接结构证明。", "level": "基础"}, {"id": "c109", "module": "你的课题与Position 2", "q": "高温下挥发产物减少一定意味着稳定性更好吗？", "answer": "不一定。可能是降解受抑制，也可能是过度 carbonization、结构损失或形成更多不挥发残炭。需要结合物理/机械测试判断最佳处理。", "example": "≥800°C 的结果要同时考虑 carbonization 与潜在机械影响。", "english": "Lower volatile-product signals do not automatically mean better overall material performance.", "trap": "不要把单一化学趋势等同于综合性能最优。", "level": "基础"}, {"id": "c110", "module": "口试救场", "q": "回答技术问题最实用的四步结构是什么？", "answer": "先给一句直接答案；再给两条依据或例子；必要时说明证据边界；最后连接到 analytical chemistry / Position 2。", "example": "结论 → 原理/例子 → limitation → transferability。", "english": "I would answer this in two parts. First... Second... The main limitation is...", "trap": "不要一开口就绕很长背景。", "level": "基础"}, {"id": "c111", "module": "口试救场", "q": "遇到没直接做过的问题，怎样诚实回答？", "answer": "先明确没有直接经验，再说 current understanding，随后连接到你做过的相似 analytical problem 和学习路径。", "example": "例如 nanoplastics：承认未直接做过，转到 Py-GC-MS、matrix effects、blanks 与 method validation。", "english": "I have not worked directly on this exact system yet, so I would not want to overstate my experience. My current understanding is that...", "trap": "不要只说 I don't know 然后停住，也不要硬编。", "level": "基础"}, {"id": "c112", "module": "口试救场", "q": "听不清问题时怎么说？", "answer": "礼貌请求重复或换一种表达，确保回答准确。", "example": "", "english": "Could I kindly ask you to repeat or rephrase the question? I want to make sure I answer it precisely.", "trap": "这不会显得英语差，反而比答非所问好。", "level": "基础"}, {"id": "c113", "module": "口试救场", "q": "需要一点时间组织答案时怎么说？", "answer": "用结构句给自己几秒钟，并让回答更清楚。", "example": "", "english": "Let me structure my answer in two points.", "trap": "不要长时间沉默或连续说 sorry。", "level": "基础"}, {"id": "c114", "module": "口试救场", "q": "为什么读 PhD 的回答应该包含什么？", "answer": "研究自主性、提出问题、设计方法、解释复杂数据、发表成果，以及从执行实验成长为独立研究者。", "example": "你的 thesis 让你发现自己喜欢用 analytical chemistry 解决材料与环境问题。", "english": "I want to develop from performing analytical work into a researcher who can formulate questions, design methods, and interpret complex data.", "trap": "不要把奖学金、签证或找工作作为主线。", "level": "基础"}, {"id": "c115", "module": "口试救场", "q": "为什么适合 Position 2？", "answer": "已有可迁移训练：复杂材料、Py-GC-MS、SPME/silylation、marker interpretation、blank/carryover、数据处理和谨慎的证据边界；博士阶段扩展到真实复杂环境基质与 validation。", "example": "", "english": "My strongest fit is analytical method development for polymeric materials in environmental contexts.", "trap": "不要说我已经是 microplastics expert。", "level": "基础"}, {"id": "c116", "module": "口试救场", "q": "一句话总结你的研究身份。", "answer": "你的主身份是 analytical chemistry applied to complex organic and material systems；文化遗产是应用背景之一。", "example": "", "english": "My strongest recent training is analytical chemistry applied to complex organic and material systems.", "trap": "不要先用很长的艺术背景介绍自己。", "level": "基础"}, {"id": "c117", "module": "口试救场", "q": "一句话总结从 thesis 到 Position 2 的迁移逻辑。", "answer": "从受控老化材料体系中的 GC-MS characterization 与 marker interpretation，迁移到真实环境聚合物材料的 identification、quantification、characterization 和 method validation。", "example": "", "english": "I want to transfer my experience in material characterization and marker interpretation to polymeric materials in more complex environmental matrices.", "trap": "迁移的是方法和思维，不是声称样品体系相同。", "level": "基础"}];
+const modules = [...new Set(CARDS.map(c => c.module))];
+const $ = id => document.getElementById(id);
+const storageKey = "phdOralChemCardsV2";
+let storageEnabled = true;
+function loadSavedProgress() {
+  try {
+    const raw = window.localStorage ? window.localStorage.getItem(storageKey) : null;
+    const parsed = raw ? JSON.parse(raw) : {};
+    return {
+      known: new Set(Array.isArray(parsed.known) ? parsed.known : []),
+      later: new Set(Array.isArray(parsed.later) ? parsed.later : [])
+    };
+  } catch (err) {
+    storageEnabled = false;
+    return { known: new Set(), later: new Set() };
+  }
+}
+let saved = loadSavedProgress();
+let filtered = CARDS.slice();
+let idx = 0;
+let answerShown = false;
+let reviewOnly = false;
+let listMode = false;
+
+function save() {
+  if (storageEnabled) {
+    try {
+      window.localStorage.setItem(storageKey, JSON.stringify({
+        known: Array.from(saved.known),
+        later: Array.from(saved.later)
+      }));
+    } catch (err) {
+      storageEnabled = false;
+    }
+  }
+  updateStats();
+}
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function moduleOptions() {
+  $("moduleSelect").innerHTML = '<option value="">全部模块</option>' +
+    modules.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join("");
+}
+function applyFilter() {
+  const mod = $("moduleSelect").value;
+  const term = $("searchInput").value.trim().toLowerCase();
+  filtered = CARDS.filter(c => {
+    if (mod && c.module !== mod) return false;
+    if (reviewOnly && !saved.later.has(c.id)) return false;
+    const hay = (c.q+" "+c.answer+" "+c.example+" "+c.english+" "+c.trap+" "+c.module).toLowerCase();
+    return !term || hay.includes(term);
+  });
+  idx = Math.min(idx, Math.max(0, filtered.length - 1));
+  answerShown = false;
+  render();
+}
+function answerHTML(c) {
+  let h = `<div class="section"><span class="label">理解</span>${c.answer}</div>`;
+  if (c.example) h += `<div class="section"><span class="label">例子</span>${c.example}</div>`;
+  if (c.english) h += `<div class="section english"><span class="label">口试英文</span>${esc(c.english)}</div>`;
+  if (c.trap) h += `<div class="section trap"><span class="label">边界提醒</span>${c.trap}</div>`;
+  return h;
+}
+function renderCard() {
+  const hasCards = filtered.length > 0;
+  $("prevBtn").disabled = !hasCards;
+  $("nextBtn").disabled = !hasCards;
+  $("toggleBtn").disabled = !hasCards;
+  $("knownBtn").disabled = !hasCards;
+  $("laterBtn").disabled = !hasCards;
+
+  if (!hasCards) {
+    $("moduleTag").textContent = "无结果";
+    $("counter").textContent = "0 / 0";
+    $("question").textContent = "没有匹配的卡片";
+    $("answer").innerHTML = '<div class="empty">请打开右上角菜单，清空搜索或更换模块。</div>';
+    $("answer").classList.add("show");
+    $("statusLine").textContent = "";
+    $("progressBar").style.width = "0%";
+    $("toggleBtn").textContent = "显示答案";
+    return;
+  }
+
+  const c = filtered[idx];
+  $("moduleTag").textContent = c.module;
+  $("counter").textContent = `${idx+1} / ${filtered.length}`;
+  $("question").textContent = c.q;
+  $("answer").innerHTML = answerHTML(c);
+  $("answer").classList.toggle("show", answerShown);
+  $("toggleBtn").textContent = answerShown ? "隐藏答案" : "显示答案";
+  const status = saved.known.has(c.id) ? "状态：已掌握 ✓" : saved.later.has(c.id) ? "状态：稍后复习 ↻" : "状态：未标记";
+  $("statusLine").textContent = status;
+  $("knownBtn").classList.toggle("active", saved.known.has(c.id));
+  $("laterBtn").classList.toggle("active", saved.later.has(c.id));
+  $("progressBar").style.width = `${((idx+1)/filtered.length)*100}%`;
+}
+function renderList() {
+  if (!filtered.length) {
+    $("listMode").innerHTML = '<div class="empty">没有匹配的卡片。</div>';
+    return;
+  }
+  const groups = {};
+  filtered.forEach(function(c) {
+    if (!groups[c.module]) groups[c.module] = [];
+    groups[c.module].push(c);
+  });
+  $("listMode").innerHTML = Object.entries(groups).map(([m, arr]) =>
+    `<h2 class="groupTitle">${esc(m)} · ${arr.length}</h2>` +
+    arr.map(c => `<details><summary>${esc(c.q)}</summary><div class="detailBody">${answerHTML(c)}</div></details>`).join("")
+  ).join("");
+}
+function render() {
+  updateStats();
+  if (listMode) renderList(); else renderCard();
+}
+function updateStats() {
+  $("totalStat").textContent = CARDS.length;
+  $("knownStat").textContent = saved.known.size;
+  $("laterStat").textContent = saved.later.size;
+  $("filterStat").textContent = filtered.length;
+}
+function next() {
+  if (!filtered.length) return;
+  idx = (idx + 1) % filtered.length; answerShown = false; renderCard();
+}
+function prev() {
+  if (!filtered.length) return;
+  idx = (idx - 1 + filtered.length) % filtered.length; answerShown = false; renderCard();
+}
+$("moduleSelect").addEventListener("change", applyFilter);
+$("searchInput").addEventListener("input", applyFilter);
+$("toggleBtn").onclick = () => { answerShown = !answerShown; renderCard(); };
+$("nextBtn").onclick = next;
+$("prevBtn").onclick = prev;
+$("shuffleBtn").onclick = () => {
+  for (let i=filtered.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [filtered[i],filtered[j]]=[filtered[j],filtered[i]]; }
+  idx=0; answerShown=false; render();
+};
+$("reviewBtn").onclick = () => {
+  reviewOnly=!reviewOnly;
+  $("reviewBtn").classList.toggle("active",reviewOnly);
+  $("reviewBtn").textContent=reviewOnly?"显示全部":"只看稍后";
+  applyFilter();
+};
+$("modeBtn").onclick = () => {
+  listMode=!listMode;
+  $("deckMode").classList.toggle("hide",listMode);
+  $("listMode").classList.toggle("show",listMode);
+  $("modeBtn").classList.toggle("active",listMode);
+  $("modeBtn").textContent=listMode?"返回抽卡":"列表速查";
+  render();
+};
+$("knownBtn").onclick = () => {
+  if (!filtered.length) return;
+  const id=filtered[idx].id;
+  if(saved.known.has(id)) saved.known.delete(id); else {saved.known.add(id); saved.later.delete(id);}
+  save(); renderCard();
+};
+$("laterBtn").onclick = () => {
+  if (!filtered.length) return;
+  const id=filtered[idx].id;
+  if(saved.later.has(id)) saved.later.delete(id); else {saved.later.add(id); saved.known.delete(id);}
+  save(); renderCard();
+};
+
+function exportProgress() {
+  const payload = {
+    app: "PhD Oral Chemistry Microlearning Cards",
+    version: 2,
+    exportedAt: new Date().toISOString(),
+    known: Array.from(saved.known),
+    later: Array.from(saved.later)
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "phd-cards-progress.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+
+function importProgressFile(file) {
+  const reader = new FileReader();
+  reader.onload = function() {
+    try {
+      const data = JSON.parse(String(reader.result || "{}"));
+      const validIds = new Set(CARDS.map(c => c.id));
+      const known = Array.isArray(data.known) ? data.known.filter(id => validIds.has(id)) : [];
+      const later = Array.isArray(data.later) ? data.later.filter(id => validIds.has(id)) : [];
+      saved.known = new Set(known);
+      saved.later = new Set(later.filter(id => !saved.known.has(id)));
+      save();
+      applyFilter();
+      alert("进度已导入：会了 " + saved.known.size + " 张，稍后复习 " + saved.later.size + " 张。");
+    } catch (err) {
+      alert("这个文件无法识别，请选择本网页导出的 JSON 进度文件。");
+    }
+    $("importFile").value = "";
+  };
+  reader.readAsText(file, "utf-8");
+}
+
+$("exportBtn").onclick = exportProgress;
+$("importBtn").onclick = () => $("importFile").click();
+$("importFile").addEventListener("change", e => {
+  const file = e.target.files && e.target.files[0];
+  if (file) importProgressFile(file);
+});
+
+$("resetBtn").onclick = () => {
+  if(confirm("确定清空所有“会了 / 稍后复习”记录吗？")) {
+    saved.known.clear(); saved.later.clear(); save(); applyFilter();
+  }
+};
+document.addEventListener("keydown", e => {
+  if (e.target.matches("input,select")) return;
+  if (e.key==="ArrowRight") next();
+  if (e.key==="ArrowLeft") prev();
+  if (e.key===" " || e.key==="Enter") { e.preventDefault(); answerShown=!answerShown; renderCard(); }
+});
+
+
+function openDrawer() {
+  $("drawer").classList.add("open");
+  $("drawerOverlay").classList.add("show");
+  $("drawer").setAttribute("aria-hidden","false");
+  document.body.classList.add("drawerOpen");
+}
+function closeDrawer() {
+  $("drawer").classList.remove("open");
+  $("drawerOverlay").classList.remove("show");
+  $("drawer").setAttribute("aria-hidden","true");
+  document.body.classList.remove("drawerOpen");
+}
+$("menuBtn").onclick = openDrawer;
+$("closeDrawerBtn").onclick = closeDrawer;
+$("drawerOverlay").onclick = closeDrawer;
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeDrawer();
+});
+
+["shuffleBtn","reviewBtn","modeBtn","exportBtn","resetBtn"].forEach(function(id) {
+  const el = $(id);
+  if (!el) return;
+  const original = el.onclick;
+  el.onclick = function(ev) {
+    if (typeof original === "function") original.call(el, ev);
+    closeDrawer();
+  };
+});
+$("moduleSelect").addEventListener("change", closeDrawer);
+
+moduleOptions();
+applyFilter();
+
+
+
+</script>
+</body>
+</html>
